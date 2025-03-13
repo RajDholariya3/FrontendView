@@ -1,0 +1,536 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Tech Verse</title>
+    <style>
+        :root {
+            --primary: #3498db;
+            --primary-light: #5dade2;
+            --primary-dark: #2874a6;
+            --secondary: #2c3e50;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --gradient: linear-gradient(135deg, #3498db, #8e44ad);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .about-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+        
+        .hero-section {
+            position: relative;
+            padding: 6rem 2rem;
+            text-align: center;
+            background: var(--gradient);
+            border-radius: 20px;
+            margin-bottom: 4rem;
+            color: white;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+        }
+        
+        .hero-section::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: repeating-linear-gradient(
+                transparent,
+                transparent 40px,
+                rgba(255, 255, 255, 0.05) 40px,
+                rgba(255, 255, 255, 0.05) 80px
+            );
+            transform: rotate(30deg);
+            z-index: 1;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .tech-verse-name {
+            font-size: 4.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            letter-spacing: -1px;
+            background: linear-gradient(to right, #ffffff, #f5f5f5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .tech-verse-name span {
+            color: var(--accent);
+            -webkit-text-fill-color: var(--accent);
+        }
+        
+        .tagline {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            font-weight: 300;
+            color:white
+        }
+        
+        .decorative-line {
+            width: 100px;
+            height: 5px;
+            background: white;
+            margin: 2rem auto;
+            border-radius: 10px;
+        }
+        
+        .section {
+            padding: 4rem 0;
+            position: relative;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 2.5rem;
+            color: var(--secondary);
+            position: relative;
+            font-weight: 700;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--gradient);
+            border-radius: 2px;
+        }
+        
+        .story-box {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .story-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .story-box::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 8px;
+            height: 100%;
+            background: var(--gradient);
+            z-index: -1;
+        }
+        
+        .story-heading {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .story-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        
+        .story-content p {
+            margin-bottom: 1.5rem;
+        }
+        
+        .values-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .value-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
+        
+        .value-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+        
+        .value-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: var(--gradient);
+            z-index: -1;
+        }
+        
+        .value-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .value-icon::after {
+            content: "";
+            position: absolute;
+            width: 70px;
+            height: 70px;
+            background: rgba(52, 152, 219, 0.1);
+            border-radius: 50%;
+            z-index: -1;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .value-card h3 {
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            color: var(--secondary);
+            font-weight: 600;
+        }
+        
+        .stats-section {
+            background: var(--gradient);
+            color: white;
+            padding: 5rem 2rem;
+            text-align: center;
+            border-radius: 20px;
+            margin: 4rem 0;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stats-section::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: repeating-linear-gradient(
+                transparent,
+                transparent 40px,
+                rgba(255, 255, 255, 0.05) 40px,
+                rgba(255, 255, 255, 0.05) 80px
+            );
+            transform: rotate(30deg);
+        }
+        
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .stat-item h3 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+        
+        .stat-item p {
+            font-size: 1.2rem;
+            font-weight: 300;
+        }
+        
+        .partners-section {
+            padding: 4rem 0;
+        }
+        
+        .partners-text {
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .brand-names {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+        }
+        
+        .brand-name {
+            padding: 1.5rem 2.5rem;
+            background: white;
+            border-radius: 10px;
+            font-weight: 600;
+            color: var(--dark);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+        }
+        
+        .brand-name:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            color: var(--primary);
+        }
+        
+        .cta-section {
+            background: white;
+            text-align: center;
+            padding: 5rem 2rem;
+            border-radius: 20px;
+            margin-top: 4rem;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+        }
+        
+        .cta-section h2 {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+        
+        .cta-section p {
+            font-size: 1.2rem;
+            margin-bottom: 2.5rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 1.2rem 3rem;
+            background: var(--gradient);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 10px 20px rgba(52, 152, 219, 0.3);
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .btn::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #8e44ad, #3498db);
+            z-index: -1;
+            transition: opacity 0.3s;
+            opacity: 0;
+        }
+        
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 25px rgba(52, 152, 219, 0.4);
+        }
+        
+        .btn:hover::after {
+            opacity: 1;
+        }
+        
+        .animated-bg {
+            position: absolute;
+            height: 300px;
+            width: 300px;
+            border-radius: 50%;
+            background: rgba(52, 152, 219, 0.05);
+            z-index: -1;
+        }
+        
+        .bg-1 {
+            top: 20%;
+            left: -150px;
+        }
+        
+        .bg-2 {
+            bottom: 10%;
+            right: -150px;
+            background: rgba(142, 68, 173, 0.05);
+            height: 400px;
+            width: 400px;
+        }
+        
+       @@media (max-width: 768px) {
+            .tech-verse-name {
+                font-size: 3rem;
+            }
+            
+            .hero-section {
+                padding: 4rem 1.5rem;
+            }
+            
+            .section {
+                padding: 3rem 0;
+            }
+            
+            .story-box {
+                padding: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="p-5"></div>
+    <div class="about-container ">
+        <div class="animated-bg bg-1"></div>
+        <div class="animated-bg bg-2"></div>
+        
+        <section class="hero-section">
+            <div class="hero-content">
+                <h1 class="tech-verse-name">Tech<span>Verse</span></h1>
+                <p class="tagline">Powering Your Digital Journey Through Innovation</p>
+                <div class="decorative-line"></div>
+                <p class="tagline">Your premium destination for cutting-edge computers, laptops, and accessories</p>
+            </div>
+        </section>
+        
+        <section class="section">
+            <h2 class="section-title">Our Story</h2>
+            
+            <div class="story-box">
+                <h3 class="story-heading">From Passion to Excellence</h3>
+                <div class="story-content">
+                    <p>Founded in 2015, Tech Verse began as a small startup with a big vision: to make premium technology accessible to everyone. What started as a modest online store has grown into a trusted destination for tech enthusiasts and professionals alike.</p>
+                    <p>Our journey has been fueled by a deep passion for innovation and a commitment to customer satisfaction. We've carefully curated our catalog to include only the most reliable and cutting-edge products, ensuring that when you shop with us, you're investing in quality that lasts.</p>
+                </div>
+            </div>
+            
+            <div class="story-box">
+                <h3 class="story-heading">Innovation at Every Turn</h3>
+                <div class="story-content">
+                    <p>At Tech Verse, we believe that technology should enhance your life, not complicate it. That's why we've built our business around simplifying the tech buying experience. Our team of experts meticulously tests and evaluates each product before it earns a place in our inventory.</p>
+                    <p>We're not just sellers; we're tech enthusiasts who understand the importance of finding the perfect device for your specific needs. Whether you're a creative professional, a hardcore gamer, or a business leader, we have solutions tailored just for you.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section class="section">
+            <h2 class="section-title">Our Values</h2>
+            
+            <div class="values-container">
+                <div class="value-card">
+                    <div class="value-icon">★</div>
+                    <h3>Quality Assurance</h3>
+                    <p>We never compromise on quality. Every product in our catalog meets rigorous standards for performance, durability, and value.</p>
+                </div>
+                
+                <div class="value-card">
+                    <div class="value-icon">♥</div>
+                    <h3>Customer First</h3>
+                    <p>Your satisfaction is our top priority. We're committed to providing exceptional service at every step of your shopping journey.</p>
+                </div>
+                
+                <div class="value-card">
+                    <div class="value-icon">↻</div>
+                    <h3>Innovation</h3>
+                    <p>We constantly evolve and adapt, bringing you the latest technologies and solutions as soon as they become available.</p>
+                </div>
+                
+                <div class="value-card">
+                    <div class="value-icon">⚖</div>
+                    <h3>Integrity</h3>
+                    <p>Honesty and transparency guide all our business practices. What you see is exactly what you get - no surprises.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section class="stats-section">
+            <div class="stats-container">
+                <div class="stat-item">
+                    <h3>5K+</h3>
+                    <p class="tagline">Happy Customers</p>
+                </div>
+                
+                <div class="stat-item">
+                    <h3>50+</h3>
+                    <p class="tagline">Products</p>
+                </div>
+                
+                <div class="stat-item">
+                    <h3>99%</h3>
+                    <p class="tagline">Satisfaction Rate</p>
+                </div>
+                
+                <div class="stat-item">
+                    <h3>24/7</h3>
+                    <p class="tagline">Customer Support</p>
+                </div>
+            </div>
+        </section>
+        
+        <section class="partners-section">
+            <h2 class="section-title">Our Partners</h2>
+            <p class="partners-text">We've partnered with the world's leading technology brands to bring you premium products at competitive prices.</p>
+            
+            <div class="brand-names">
+                <div class="brand-name">Apple</div>
+                <div class="brand-name">Dell</div>
+                <div class="brand-name">HP</div>
+                <div class="brand-name">Lenovo</div>
+                <div class="brand-name">Samsung</div>
+                <div class="brand-name">Asus</div>
+            </div>
+        </section>
+        
+        <section class="cta-section">
+            <h2>Ready to Upgrade Your Tech?</h2>
+            <p>Browse our collection of premium computers, laptops, and accessories today. Experience the Tech Verse difference – where quality meets innovation.</p>
+            <button class="btn">Shop Now</button>
+        </section>
+    </div>
+</body>
+</html>

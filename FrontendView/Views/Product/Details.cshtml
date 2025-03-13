@@ -1,0 +1,37 @@
+﻿@{
+    ViewData["Title"] = "Product Details";
+}
+
+<div class="container mt-4">
+    <h2 id="productName"></h2>
+    <img id="productImage" src="" alt="" class="img-fluid" width="300">
+    <p><strong>Brand:</strong> <span id="brandName"></span></p>
+    <p><strong>Category:</strong> <span id="categoryName"></span></p>
+    <p><strong>Price:</strong> $<span id="price"></span></p>
+    <p><strong>Stock:</strong> <span id="stockQuantity"></span> Available</p>
+    <p><strong>Average Rating:</strong> <span id="averageRating"></span></p>
+    <p id="description"></p>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            var productData = sessionStorage.getItem("selectedProduct");
+
+            if (productData) {
+                var product = JSON.parse(productData);
+
+                $("#productName").text(product.Name);
+                $("#productImage").attr("src", product.ImageUrl).attr("alt", product.Name);
+                $("#brandName").text(product.BrandName);
+                $("#categoryName").text(product.CategoryName);
+                $("#price").text(product.Price);
+                $("#stockQuantity").text(product.StockQuantity);
+                $("#averageRating").text(product.AverageRating || "N/A");
+                $("#description").text(product.Description);
+            } else {
+                alert("No product data found.");
+            }
+        });
+    </script>
+}

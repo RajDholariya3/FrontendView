@@ -1,0 +1,374 @@
+﻿@model List<FrontendView.Models.ProductModel>
+@{
+    ViewData["Title"] = "Product List";
+}
+
+<style>
+    body {
+        background-color: #ffffff;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .product-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        padding: 20px;
+        text-align: center;
+        position: relative;
+    }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        }
+
+    .product-image {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 8px;
+        margin-bottom: 15px;
+    }
+
+    .btn-cart {
+        background: linear-gradient(135deg, #4f46e5, #7c3aed);
+        color: white;
+        font-size: 16px;
+        padding: 8px 20px;
+        border-radius: 25px;
+        border: none;
+        transition: all 0.3s ease;
+    }
+
+        .btn-cart:hover {
+            background: linear-gradient(135deg, #4338ca, #6d28d9);
+            transform: translateY(-2px);
+        }
+
+    .btn-wishlist {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: #f8f9fa;
+        border: none;
+        border-radius: 50%;
+        width: 35px;
+        height: 35px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+    }
+
+        .btn-wishlist:hover {
+            background: #e2e8f0;
+            color: #dc2626;
+        }
+
+        .btn-wishlist.active {
+            color: #dc2626;
+            background: #fee2e2;
+        }
+
+    .quantity-control {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        margin: 15px 0;
+    }
+
+    .quantity-btn {
+        background: #e5e7eb;
+        border: none;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        transition: all 0.3s ease;
+    }
+
+        .quantity-btn:hover {
+            background: #d1d5db;
+        }
+
+    .quantity-input {
+        width: 50px;
+        text-align: center;
+        border: 1px solid #e5e7eb;
+        border-radius: 6px;
+        padding: 5px;
+    }
+
+    .product-info h5 {
+        color: #1e3a8a;
+        margin-bottom: 5px;
+    }
+
+    .product-info p {
+        color: #64748b;
+        margin-bottom: 5px;
+    }
+
+    .category-filter {
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        margin-bottom: 30px;
+    }
+
+    .category-btn {
+        background: #f8f9fa;
+        border: none;
+        padding: 8px 20px;
+        border-radius: 20px;
+        margin: 5px;
+        transition: all 0.3s ease;
+    }
+
+        .category-btn:hover {
+            background: #e2e8f0;
+        }
+
+        .category-btn.active {
+            background: #4f46e5;
+            color: white;
+        }
+
+    .loading-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.7);
+        display: none;
+        justify-content: center;
+        align-items: center;
+    }
+</style>
+
+<div class="container mt-5 p-5">
+    <div class="category-filter">
+        <h4 style="color: #1e3a8a">Filter by Category</h4>
+        <button class="category-btn active" asp-action="ProductList">All Categories</button>
+        @foreach (var category in ViewBag.Categories ?? new List<FrontendView.Models.CategoriesModel>())
+        {
+            <button class="category-btn" data-category-id="@category.CategoryId">@category.CategoryName</button>
+        }
+    </div>
+
+    <h2 class="text-center mb-5" style="color: #1e3a8a">🛍️ Explore Our Collection</h2>
+
+    <div class="row position-relative" id="product-container">
+        <div class="loading-overlay" id="loading-overlay">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+        @foreach (var product in Model)
+        {
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-4 product-item">
+                <div class="product-card">
+                    <button class="btn-wishlist @(ViewBag.Wishlist.Contains(product.ProductId) ? "active" : "")"
+                            data-id="@product.ProductId">
+                        <i class="far fa-heart"></i>
+                    </button>
+                    <img src="@product.ImageUrl" alt="@product.Name" class="product-image">
+                    <div class="product-info">
+                        <h5>@product.BrandName</h5>
+                        <p>@product.Name</p>
+                        <p>⭐ @product.AverageRating</p>
+                        <div class="quantity-control">
+                            <button class="quantity-btn btn-minus">-</button>
+                            <input type="number" class="quantity-input" min="1" value="1" data-id="@product.ProductId">
+                            <button class="quantity-btn btn-plus">+</button>
+                        </div>
+                        <button class="btn btn-cart add-to-cart-btn" data-id="@product.ProductId">
+                            🛒 Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Store wishlist state
+        let wishlist = @Html.Raw(Json.Serialize(ViewBag.Wishlist));
+
+        // Quantity Controls
+        function attachQuantityListeners() {
+            document.querySelectorAll(".btn-minus").forEach(button => {
+                button.addEventListener("click", function () {
+                    let input = this.nextElementSibling;
+                    if (parseInt(input.value) > 1) {
+                        input.value = parseInt(input.value) - 1;
+                    }
+                });
+            });
+
+            document.querySelectorAll(".btn-plus").forEach(button => {
+                button.addEventListener("click", function () {
+                    let input = this.previousElementSibling;
+                    input.value = parseInt(input.value) + 1;
+                });
+            });
+        }
+
+        // Add to Cart
+        function attachCartListeners() {
+            document.querySelectorAll(".add-to-cart-btn").forEach(button => {
+                button.addEventListener("click", function () {
+                    let productId = parseInt(this.getAttribute("data-id"));
+                    let quantityInput = document.querySelector(`.quantity-input[data-id='${productId}']`);
+                    let quantity = quantityInput ? parseInt(quantityInput.value) : 1;
+
+                    fetch('@Url.Action("Save", "Cart")', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            ProductId: productId,
+                            Quantity: quantity
+                        })
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            alert(data.success ? "✅ Product added to cart!" : "❌ Failed to add product: " + (data.message || "Unknown error"));
+                        })
+                        .catch(error => console.error("Cart Error:", error));
+                });
+            });
+        }
+
+        // Wishlist Functionality
+        function attachWishlistListeners() {
+            document.querySelectorAll(".btn-wishlist").forEach(button => {
+                button.addEventListener("click", function () {
+                    let productId = parseInt(this.getAttribute("data-id"));
+                    let isActive = this.classList.contains("active");
+
+                    fetch('@Url.Action("ToggleWishlist", "Product")', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            ProductId: productId
+                        })
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                this.classList.toggle("active");
+                                if (isActive) {
+                                    wishlist = wishlist.filter(id => id !== productId);
+                                    alert("Removed from wishlist");
+                                } else {
+                                    wishlist.push(productId);
+                                    alert("Added to wishlist");
+                                }
+                            } else {
+                                alert("❌ Failed to update wishlist: " + data.message);
+                            }
+                        })
+                        .catch(error => {
+                            console.error("Wishlist Error:", error);
+                            alert("❌ An error occurred while updating the wishlist.");
+                        });
+                });
+            });
+        }
+
+        // Category Filter
+        const categoryButtons = document.querySelectorAll(".category-btn");
+        const productContainer = document.getElementById("product-container");
+        const loadingOverlay = document.getElementById("loading-overlay");
+
+        categoryButtons.forEach(button => {
+            button.addEventListener("click", function () {
+                categoryButtons.forEach(btn => btn.classList.remove("active"));
+                this.classList.add("active");
+
+                loadingOverlay.style.display = "flex";
+                productContainer.style.opacity = "0.5";
+
+                const categoryId = parseInt(this.getAttribute("data-category-id"));
+                const url = categoryId === 0
+                    ? '@Url.Action("ProductList", "Product")'
+                    : '@Url.Action("ProductsByCategory", "Product")?categoryId=' + categoryId;
+
+                fetch(url, {
+                    method: 'GET',
+                    headers: { 'Accept': 'application/json' }
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        return response.json();
+                    })
+                    .then(products => {
+                        // ⭐ Clear the container completely before rendering
+                        productContainer.innerHTML = '';
+
+                        if (products && products.length > 0) {
+                            products.forEach(product => {
+                                const isInWishlist = wishlist.includes(product.productId);
+                                const productHtml = `
+                                <div class="col-lg-3 col-md-4 col-sm-6 mb-4 product-item">
+                                    <div class="product-card">
+                                        <button class="btn-wishlist ${isInWishlist ? 'active' : ''}" data-id="${product.productId}">
+                                            <i class="far fa-heart"></i>
+                                        </button>
+                                        <img src="${product.imageUrl}" alt="${product.name}" class="product-image">
+                                        <div class="product-info">
+                                            <h5>${product.brandName}</h5>
+                                            <p>${product.name}</p>
+                                            <p>⭐ ${product.averageRating || 0}</p>
+                                            <div class="quantity-control">
+                                                <button class="quantity-btn btn-minus">-</button>
+                                                <input type="number" class="quantity-input" min="1" value="1" data-id="${product.productId}">
+                                                <button class="quantity-btn btn-plus">+</button>
+                                            </div>
+                                            <button class="btn btn-cart add-to-cart-btn" data-id="${product.productId}">
+                                                🛒 Add to Cart
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>`;
+                                productContainer.insertAdjacentHTML('beforeend', productHtml);
+                            });
+                        } else {
+                            productContainer.innerHTML = '<div class="col-12 text-center">No products found in this category</div>';
+                        }
+
+                        attachQuantityListeners();
+                        attachCartListeners();
+                        attachWishlistListeners();
+
+                        loadingOverlay.style.display = "none";
+                        productContainer.style.opacity = "1";
+                    })
+                    .catch(error => {
+                        console.error("Fetch Error:", error);
+                        loadingOverlay.style.display = "none";
+                        productContainer.style.opacity = "1";
+                        productContainer.innerHTML = '<div class="col-12 text-center">Error loading products: ' + error.message + '</div>';
+                    });
+            });
+        });
+
+        // Initial attachment of listeners
+        attachQuantityListeners();
+        attachCartListeners();
+        attachWishlistListeners();
+    });
+</script>
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>

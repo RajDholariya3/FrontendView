@@ -1,0 +1,219 @@
+﻿@model FrontendView.Model.UserModel
+
+@{
+    ViewData["Title"] = "User Profile";
+}
+<main id="main">
+    <!-- Profile Header Section -->
+    <div class="profile-header text-white text-center py-5">
+        <div class="container">
+            <div class="header-content">
+                <img src="/images/default-profile.png" class="profile-img-large mb-4" alt="Profile Picture">
+                <h1 class="display-4 fw-bold mb-2">@Model.Name</h1>
+                <p class="role-badge">@(Model.IsAdmin ? "Administrator" : "Standard User")</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Card -->
+    <div class="container position-relative">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="profile-card">
+                    <div class="profile-card-body p-4 animate-fade-in">
+                        <!-- User Details -->
+                        <div class="user-details-grid">
+                            <div class="detail-item">
+                                <div class="detail-icon">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="detail-content">
+                                    <label>User ID</label>
+                                    <span>@Model.UserId</span>
+                                </div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-icon">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                                <div class="detail-content">
+                                    <label>Email</label>
+                                    <span>@Model.Email</span>
+                                </div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-icon">
+                                    <i class="fas fa-phone"></i>
+                                </div>
+                                <div class="detail-content">
+                                    <label>Phone</label>
+                                    <span>@(string.IsNullOrEmpty(Model.PhoneNumber) ? "N/A" : Model.PhoneNumber)</span>
+                                </div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-icon">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                                <div class="detail-content">
+                                    <label>Address</label>
+                                    <span>@(string.IsNullOrEmpty(Model.Address) ? "N/A" : Model.Address)</span>
+                                </div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-icon">
+                                    <i class="fas fa-calendar"></i>
+                                </div>
+                                <div class="detail-content">
+                                    <label>Joined On</label>
+                                    <span>@(Model.CreatedDate?.ToString("dd MMM yyyy") ?? "N/A")</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Action Buttons -->
+                        <div class="action-buttons mt-5">
+                            <a asp-action="EditProfile" asp-route-userId="@Model.UserId" class="btn btn-primary">
+                                <i class="fas fa-edit"></i> Edit Profile
+                            </a>
+                            <a asp-action="ChangePassword" asp-route-userId="@Model.UserId" class="btn btn-secondary">
+                                <i class="fas fa-key"></i> Change Password
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<style>
+    .profile-header {
+        background: linear-gradient(135deg, #2193b0, #6dd5ed);
+        min-height: 300px;
+        position: relative;
+        margin-bottom: 6rem;
+    }
+
+    .header-content {
+        padding: 2rem 0;
+    }
+
+    .profile-img-large {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        border: 4px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        object-fit: cover;
+    }
+
+    .role-badge {
+        display: inline-block;
+        padding: 0.5rem 1.5rem;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50px;
+        backdrop-filter: blur(10px);
+        font-size: 0.9rem;
+        letter-spacing: 1px;
+    }
+
+    .profile-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        margin-top: -4rem;
+    }
+
+    .user-details-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+        padding: 1rem;
+    }
+
+    .detail-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem;
+        background: #f8f9fa;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+    }
+
+    .detail-item:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .detail-icon {
+        width: 45px;
+        height: 45px;
+        background: #e8f0fe;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #2193b0;
+        font-size: 1.2rem;
+    }
+
+    .detail-content {
+        flex: 1;
+    }
+
+    .detail-content label {
+        display: block;
+        font-size: 0.8rem;
+        color: #6c757d;
+        margin-bottom: 0.2rem;
+    }
+
+    .detail-content span {
+        font-weight: 500;
+        color: #2d3436;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+    }
+
+    .btn {
+        padding: 0.8rem 2rem;
+        border-radius: 12px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-primary {
+        background: #2193b0;
+        border: none;
+    }
+
+    .btn-secondary {
+        background: #6c757d;
+        border: none;
+    }
+
+    .animate-fade-in {
+        animation: fadeIn 0.8s ease-out forwards;
+    }
+
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>

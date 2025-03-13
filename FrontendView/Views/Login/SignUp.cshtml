@@ -1,0 +1,484 @@
+﻿@model FrontendView.Model.UserModel
+@{
+    Layout = null;
+}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Tech Store</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary: #0066cc;
+            --primary-dark: #0052a3;
+            --primary-light: rgba(0, 102, 204, 0.1);
+            --text-primary: #2c3e50;
+            --text-secondary: #4a5568;
+            --text-muted: #64748b;
+            --danger: #ef4444;
+            --input-bg: #f8fafc;
+            --input-border: #e2e8f0;
+            --white: #ffffff;
+            --gray-50: #f1f5f9;
+            --gray-200: #e2e8f0;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--gray-50);
+            color: var(--text-primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .signup-container {
+            background: var(--white);
+            padding: 35px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            width: 100%;
+            max-width: 500px;
+            position: relative;
+        }
+        
+        .signup-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), #1a8cff);
+            border-radius: 16px 16px 0 0;
+        }
+
+        .brand-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 5px;
+        }
+        
+        .brand-logo i {
+            font-size: 28px;
+            color: var(--primary);
+            margin-right: 10px;
+        }
+        
+        .brand-name {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .store-banner {
+            background: var(--gray-50);
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            font-size: 14px;
+            color: var(--text-secondary);
+            border: 1px solid var(--gray-200);
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .store-banner i {
+            color: var(--primary);
+            margin-right: 8px;
+            font-size: 16px;
+        }
+        
+        .banner-highlight {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .welcome-text {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .welcome-text h2 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 5px;
+        }
+        
+        .welcome-text p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .input-group label {
+            font-size: 14px;
+            font-weight: 500;
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        .input-group input, .input-group textarea {
+            width: 100%;
+            padding: 14px 14px 14px 40px;
+            border: 1px solid var(--input-border);
+            border-radius: 8px;
+            background: var(--input-bg);
+            color: var(--text-primary);
+            font-size: 15px;
+            outline: none;
+            transition: all 0.25s ease;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .input-group textarea {
+            min-height: 60px;
+            resize: vertical;
+        }
+
+        .input-group input:focus, .input-group textarea:focus {
+            background: var(--white);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.15);
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: 0.2s;
+            padding: 0;
+            font-size: 16px;
+        }
+        
+        .toggle-password:hover {
+            color: var(--text-secondary);
+        }
+
+        .error-message {
+            color: var(--danger);
+            font-size: 12px;
+            margin-top: 5px;
+            display: block;
+        }
+
+        .signup-button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            background: var(--primary);
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s ease;
+            box-shadow: 0 4px 6px var(--primary-light);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            margin-top: 5px;
+        }
+
+        .signup-button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 102, 204, 0.2);
+        }
+        
+        .signup-button:active {
+            transform: translateY(0);
+            box-shadow: 0 4px 6px var(--primary-light);
+        }
+        
+        .signup-button i {
+            font-size: 14px;
+            transition: 0.3s ease;
+        }
+        
+        .signup-button:hover i {
+            transform: translateX(3px);
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 25px;
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .login-link a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+
+        .login-link a:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+        
+        .optional-tag {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-left: 5px;
+            font-weight: normal;
+        }
+        
+        @@media (max-width: 480px) {
+            .signup-container {
+                padding: 25px 20px;
+            }
+            
+            .store-banner {
+                padding: 10px;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="signup-container">
+        <div class="brand-header">
+            <div class="brand-logo">
+                <i class="fas fa-laptop"></i>
+                <span class="brand-name">Tech Store</span>
+            </div>
+        </div>
+        
+        <div class="store-banner">
+            <i class="fas fa-tag"></i>
+            Join us today and get <span class="banner-highlight">10% OFF</span> your first order
+        </div>
+        
+        <div class="welcome-text">
+            <h2>Create Account</h2>
+            <p>Fill in your details to get started</p>
+        </div>
+        
+        <form id="formSignup" method="post" asp-action="SignUp" asp-controller="Login">
+            <div class="input-group">
+                <label for="name">Full Name</label>
+                <div class="input-wrapper">
+                    <i class="fas fa-user input-icon"></i>
+                    <input 
+                        type="text" 
+                        asp-for="Name" 
+                        id="name" 
+                        name="Name" 
+                        placeholder="Enter your full name" 
+                        required 
+                        autofocus 
+                        aria-describedby="name-error" 
+                    />
+                </div>
+                <span id="name-error" asp-validation-for="Name" class="error-message"></span>
+            </div>
+
+            <div class="input-group">
+                <label for="email">Email Address</label>
+                <div class="input-wrapper">
+                    <i class="fas fa-envelope input-icon"></i>
+                    <input 
+                        type="email" 
+                        asp-for="Email" 
+                        id="email" 
+                        name="Email" 
+                        placeholder="Enter your email address" 
+                        required 
+                        aria-describedby="email-error" 
+                    />
+                </div>
+                <span id="email-error" asp-validation-for="Email" class="error-message"></span>
+            </div>
+
+            <div class="input-group">
+                <label for="password">Password</label>
+                <div class="input-wrapper">
+                    <i class="fas fa-lock input-icon"></i>
+                    <input 
+                        type="password" 
+                        asp-for="Password" 
+                        id="password" 
+                        name="Password" 
+                        placeholder="Create a password" 
+                        required 
+                        aria-describedby="password-error" 
+                    />
+                    <button 
+                        type="button" 
+                        class="toggle-password" 
+                        id="togglePassword" 
+                        aria-label="Toggle password visibility"
+                    >
+                        <i class="fas fa-eye" aria-hidden="true"></i>
+                    </button>
+                </div>
+                <span id="password-error" asp-validation-for="Password" class="error-message"></span>
+            </div>
+
+            <div class="input-group">
+                <label for="confirmPassword">Confirm Password</label>
+                <div class="input-wrapper">
+                    <i class="fas fa-lock input-icon"></i>
+                    <input 
+                        type="password" 
+                        id="confirmPassword" 
+                        name="ConfirmPassword" 
+                        placeholder="Confirm your password" 
+                        required 
+                        aria-describedby="confirm-password-error" 
+                    />
+                    <button 
+                        type="button" 
+                        class="toggle-password" 
+                        id="toggleConfirmPassword" 
+                        aria-label="Toggle password visibility"
+                    >
+                        <i class="fas fa-eye" aria-hidden="true"></i>
+                    </button>
+                </div>
+                <span id="confirm-password-error" class="error-message"></span>
+            </div>
+
+            <div class="input-group">
+                <label for="phoneNumber">Phone Number <span class="optional-tag">(Optional)</span></label>
+                <div class="input-wrapper">
+                    <i class="fas fa-phone input-icon"></i>
+                    <input 
+                        type="tel" 
+                        asp-for="PhoneNumber" 
+                        id="phoneNumber" 
+                        name="PhoneNumber" 
+                        placeholder="Enter your phone number" 
+                        aria-describedby="phone-error" 
+                    />
+                </div>
+                <span id="phone-error" asp-validation-for="PhoneNumber" class="error-message"></span>
+            </div>
+
+            <div class="input-group">
+                <label for="address">Address <span class="optional-tag">(Optional)</span></label>
+                <div class="input-wrapper">
+                    <i class="fas fa-home input-icon"></i>
+                    <textarea 
+                        asp-for="Address" 
+                        id="address" 
+                        name="Address" 
+                        placeholder="Enter your address"
+                        aria-describedby="address-error"
+                    ></textarea>
+                </div>
+                <span id="address-error" asp-validation-for="Address" class="error-message"></span>
+            </div>
+
+            <button type="submit" class="signup-button">
+                <span>Create Account</span>
+                <i class="fas fa-arrow-right"></i>
+            </button>
+
+            <p class="login-link">Already have an account? <a asp-action="Login" asp-controller="Login">Sign In</a></p>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Toggle password visibility for password field
+            const togglePassword = document.getElementById('togglePassword');
+            const passwordField = document.getElementById('password');
+            
+            togglePassword.addEventListener('click', function() {
+                const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordField.setAttribute('type', type);
+                
+                // Toggle icon
+                const icon = this.querySelector('i');
+                icon.classList.toggle('fa-eye');
+                icon.classList.toggle('fa-eye-slash');
+            });
+            
+            // Toggle password visibility for confirm password field
+            const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
+            const confirmPasswordField = document.getElementById('confirmPassword');
+            
+            toggleConfirmPassword.addEventListener('click', function() {
+                const type = confirmPasswordField.getAttribute('type') === 'password' ? 'text' : 'password';
+                confirmPasswordField.setAttribute('type', type);
+                
+                // Toggle icon
+                const icon = this.querySelector('i');
+                icon.classList.toggle('fa-eye');
+                icon.classList.toggle('fa-eye-slash');
+            });
+            
+            // Validate password confirmation
+            const form = document.getElementById('formSignup');
+            const confirmPasswordError = document.getElementById('confirm-password-error');
+            
+            form.addEventListener('submit', function(event) {
+                if (passwordField.value !== confirmPasswordField.value) {
+                    event.preventDefault();
+                    confirmPasswordError.textContent = 'Passwords do not match.';
+                }
+            });
+            
+            // Clear error message when typing in confirm password field
+            confirmPasswordField.addEventListener('input', function() {
+                if (passwordField.value === confirmPasswordField.value) {
+                    confirmPasswordError.textContent = '';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

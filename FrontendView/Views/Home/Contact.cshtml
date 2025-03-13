@@ -1,0 +1,322 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - TechHub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background-color: #232f3e;
+            padding: 20px 0;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #fff;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 25px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #fff;
+            font-weight: 500;
+        }
+        
+        .hero {
+            background-color: #00a8e8;
+            color: #fff;
+            padding: 60px 0;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        
+        .hero p {
+            font-size: 18px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .contact-section {
+            padding: 80px 0;
+            text-align: center;
+        }
+        
+        .contact-heading {
+            font-size: 32px;
+            color: #232f3e;
+            margin-bottom: 50px;
+        }
+        
+        .contact-cards {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+        }
+        
+        .contact-card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            padding: 30px;
+            width: 300px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        
+        .contact-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .card-icon {
+            font-size: 40px;
+            margin-bottom: 20px;
+            color: #00a8e8;
+        }
+        
+        .contact-card h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: #232f3e;
+        }
+        
+        .contact-card p {
+            color: #666;
+            margin-bottom: 10px;
+        }
+        
+        .store-locations {
+            margin-top: 80px;
+        }
+        
+        .store-locations h2 {
+            font-size: 28px;
+            color: #232f3e;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        
+        .stores-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+        }
+        
+        .store {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            padding: 30px;
+            width: 350px;
+        }
+        
+        .store h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: #232f3e;
+        }
+        
+        .map-placeholder {
+            height: 180px;
+            background-color: #eee;
+            margin: 20px 0;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #777;
+        }
+        
+        .faq-section {
+            background-color: #f0f5f9;
+            padding: 80px 0;
+        }
+        
+        .faq-section h2 {
+            font-size: 28px;
+            color: #232f3e;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        
+        .faq-item {
+            background-color: #fff;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            padding: 20px 30px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        }
+        
+        .faq-item h3 {
+            font-size: 18px;
+            color: #232f3e;
+            margin-bottom: 10px;
+        }
+        
+        .faq-item p {
+            color: #666;
+        }
+        
+        footer {
+            background-color: #232f3e;
+            color: #fff;
+            padding: 50px 0 20px;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column {
+            flex: 1;
+            min-width: 200px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-column h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-column ul li a {
+            color: #ddd;
+            text-decoration: none;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #444;
+        }
+        
+        @@media (max-width: 768px) {
+            .contact-cards, .stores-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="p-5"></div>
+    <section class="hero">
+        <div class="container">
+            <h1>Contact Us</h1>
+            <p>Have questions about our products or services? Find all our contact information below.</p>
+        </div>
+    </section>
+    
+    <section class="contact-section">
+        <div class="container">
+            <h2 class="contact-heading">Get In Touch</h2>
+            
+            <div class="contact-cards">
+                <div class="contact-card">
+                    <div class="card-icon">📍</div>
+                    <h3>Visit Our Stores</h3>
+                    <p>123 Tech Street</p>
+                    <p>Silicon Valley, CA 94024</p>
+                    <p>United States</p>
+                </div>
+                
+                <div class="contact-card">
+                    <div class="card-icon">📞</div>
+                    <h3>Call Us</h3>
+                    <p>Sales: (555) 123-4567</p>
+                    <p>Support: (555) 987-6543</p>
+                    <p>Mon-Fri: 9AM-6PM</p>
+                </div>
+                
+                <div class="contact-card">
+                    <div class="card-icon">✉️</div>
+                    <h3>Email Us</h3>
+                    <p>sales@techhub.com</p>
+                    <p>support@techhub.com</p>
+                    <p>info@techhub.com</p>
+                </div>
+            </div>
+            
+        </div>
+    </section>
+    
+    <section class="faq-section">
+        <div class="container">
+            <h2>Frequently Asked Questions</h2>
+            
+            <div class="faq-item">
+                <h3>What is your return policy?</h3>
+                <p>We offer a 30-day return policy on all products. Items must be in their original packaging with all accessories included.</p>
+            </div>
+            
+            <div class="faq-item">
+                <h3>Do you offer warranty on your products?</h3>
+                <p>Yes, all our laptops come with a standard 1-year manufacturer warranty. Extended warranties are available for purchase.</p>
+            </div>
+            
+            <div class="faq-item">
+                <h3>How long does shipping take?</h3>
+                <p>Standard shipping typically takes 3-5 business days. Express shipping (1-2 business days) is available at checkout.</p>
+            </div>
+            
+            <div class="faq-item">
+                <h3>Do you ship internationally?</h3>
+                <p>Yes, we ship to over 50 countries worldwide. International shipping times and costs vary by location.</p>
+            </div>
+        </div>
+    </section>
+    
+</body>

@@ -1,0 +1,149 @@
+﻿@model List<FrontendView.Models.CartModel>
+
+@{
+    ViewData["Title"] = "Shopping Cart";
+    decimal subtotal = Model.Sum(item => item.Price ?? 0);
+}
+
+<div class="container mt-5">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+    }
+
+    <h2 class="text-center mb-4">🛒 Your Shopping Cart</h2>
+
+    <div class="cart-content row g-4">
+        <!-- Cart List Area -->
+        <div class="col-lg-8">
+            @if (Model != null && Model.Any())
+            {
+                @foreach (var cart in Model)
+                {
+                    <div class="card cart-item border-0 shadow-sm p-3 mb-3">
+                        <div class="row g-3 align-items-center">
+                            <div class="col-md-3 text-center">
+                                <img src="@cart.ImageUrl" class="img-fluid rounded product-img" alt="Product">
+                            </div>
+                            <div class="col-md-7">
+                                <span class="badge bg-primary">@cart.Name</span>
+                                <h6 class="mt-2 fw-bold">@cart.ProductName</h6>
+                                <p class="price text-success fs-5 mb-1">@cart.Price?.ToString("0.00")/rs</p>
+                                <p class="text-muted small mb-0">Added on: @cart.CreatedDate?.ToString("dd MMM yyyy")</p>
+                            </div>
+                            <div class="col-md-2 text-end">
+                                <button class="btn btn-outline-danger btn-sm rounded-circle" onclick="confirmDelete(@cart.CartId)">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <p class="text-center text-muted fs-5">No items in your cart.</p>
+            }
+        </div>
+
+        <!-- Cart Summary -->
+        <div class="col-lg-4">
+            <div class="card border-0 shadow p-4">
+                <h3 class="mb-3">🛍 Summary</h3>
+                <ul class="list-unstyled">
+                    <li class="d-flex justify-content-between"><span>Subtotal:</span> <span class="cart-summary-subtotal">@subtotal.ToString("0.00")</span></li>
+                    <li class="d-flex justify-content-between"><span>Delivery:</span> <span class="text-success">Free</span></li>
+                    <li class="d-flex justify-content-between fw-bold"><strong>Total:</strong> <strong class="cart-summary-subtotal">@subtotal.ToString("0.00")</strong></li>
+                </ul>
+                <form method="post" action="/Cart/Checkout">
+                    <button type="submit" class="btn btn-success w-100 mt-3">Proceed to Checkout</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        async function confirmDelete(cartId) {
+            const result = await Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to undo this action!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "Yes, remove it!"
+            });
+
+            if (result.isConfirmed) {
+                try {
+                    const response = await fetch(`/Cart/Delete?CartId=${cartId}`, {
+                        method: 'DELETE'
+                    });
+
+                    if (response.ok) {
+                        document.querySelector(`[onclick="confirmDelete(${cartId})"]`)
+                            .closest('.cart-item').remove();
+                        Swal.fire("Deleted!", "Item removed from cart.", "success");
+                        updateSummary();
+                    } else {
+                        const errorText = await response.text();
+                        Swal.fire("Error", `Failed to delete item: ${errorText}`, "error");
+                    }
+                } catch (error) {
+                    Swal.fire("Error", "Something went wrong: " + error.message, "error");
+                }
+            }
+        }
+
+        function updateSummary() {
+            const prices = Array.from(document.querySelectorAll('.price'))
+                .map(price => parseFloat(price.textContent.replace('/rs', '')) || 0);
+            const subtotal = prices.reduce((sum, price) => sum + price, 0);
+            const subtotalElements = document.querySelectorAll('.cart-summary-subtotal');
+            subtotalElements.forEach(el => el.textContent = subtotal.toFixed(2));
+        }
+    </script>
+}
+
+<style>
+    .cart-item {
+        transition: transform 0.2s ease-in-out;
+        border-radius: 12px;
+    }
+
+        .cart-item:hover {
+            transform: scale(1.02);
+        }
+
+    .product-img {
+        max-width: 100%;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 8px;
+        transition: transform 0.2s ease-in-out;
+    }
+
+        .product-img:hover {
+            transform: scale(1.1);
+        }
+
+    .card {
+        border-radius: 12px;
+    }
+
+    .btn-outline-danger {
+        border-radius: 50%;
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+</style>
